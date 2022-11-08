@@ -20,7 +20,7 @@ class RegisterPresenter (val registerView: RegisterView){
                     call: Call<ResultRegister>,
                     response: Response<ResultRegister>
                 ) {
-                    if (response.body()?.status == 200){
+                    if (response.body()?.error == false){
                         registerView.onSuccessRegister(response.body()?.message)
                     } else{
                         registerView.onFailedRegister(response.body()?.message)

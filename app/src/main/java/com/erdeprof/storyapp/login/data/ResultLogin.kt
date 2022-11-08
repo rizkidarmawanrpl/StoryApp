@@ -9,10 +9,10 @@ data class ResultLogin(
     @field:SerializedName("status")
     val status: Int? = null*/
 
-    @field:SerializedName("error")
-    val error: Boolean? = null,
+    @field:SerializedName("loginResult")
+    val loginResult: User? = null,
     @field:SerializedName("message")
     val message: String? = null,
-    @field:SerializedName("loginResult")
-    val loginResult: User? = null
+    @field:SerializedName("error")
+    val error: Boolean? = null
 )

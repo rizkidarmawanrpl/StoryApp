@@ -6,6 +6,6 @@ data class ResultRegister(
     @field:SerializedName("message")
     val message: String? = null,
 
-    @field:SerializedName("status")
-    val status: Int? = null
+    @field:SerializedName("error")
+    val error: Boolean? = null
 )
