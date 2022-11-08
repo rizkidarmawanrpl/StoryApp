@@ -1,10 +1,12 @@
 package com.erdeprof.storyapp.network
 
+import com.erdeprof.storyapp.dashboard.data.ResultStories
 import com.erdeprof.storyapp.login.data.ResultLogin
 import com.erdeprof.storyapp.register.data.ResultRegister
 import retrofit2.Call
 import retrofit2.http.Field
 import retrofit2.http.FormUrlEncoded
+import retrofit2.http.GET
 import retrofit2.http.POST
 
 interface NetworkService {
@@ -21,4 +23,7 @@ interface NetworkService {
                  @Field("password") password : String?,
                  // @Field("alamat") alamat : String?
     ) : Call<ResultRegister>
+
+    @GET("stories")
+    fun stories() : Call<ResultStories>
 }
