@@ -8,6 +8,7 @@ import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import retrofit2.Call
 import retrofit2.http.*
+import java.io.File
 
 interface NetworkService {
     @FormUrlEncoded
@@ -30,7 +31,7 @@ interface NetworkService {
 
     @Multipart
     @POST("stories")
-    fun addStory(@Part("description") description : RequestBody?,
-                 @Part("photo") photo : RequestBody? //MultipartBody.Part?
+    fun addStory(@Part("description") description: RequestBody?,
+                 @Part photo: MultipartBody.Part?
     ) : Call<ResultAddStory>
 }
