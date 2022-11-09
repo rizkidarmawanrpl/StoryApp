@@ -30,6 +30,7 @@ class RegisterActivity : AppCompatActivity(), RegisterView {
             presenter.register(name, email, password)
         }
     }
+
     override fun onSuccessRegister(msg: String?) {
         /*alert {
             title = "Information Register"

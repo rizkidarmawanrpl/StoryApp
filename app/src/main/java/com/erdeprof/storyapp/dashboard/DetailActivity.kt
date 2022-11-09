@@ -29,6 +29,11 @@ class DetailActivity : AppCompatActivity() {
         println("ID $id")
     }
 
+    override fun onSupportNavigateUp(): Boolean {
+        onBackPressed()
+        return true
+    }
+
     companion object {
         const val EXTRA_STORY = "extra_story"
     }

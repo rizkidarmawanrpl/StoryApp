@@ -1,19 +1,20 @@
 package com.erdeprof.storyapp.network
 
+import com.erdeprof.storyapp.dashboard.data.ResultAddStory
 import com.erdeprof.storyapp.dashboard.data.ResultStories
 import com.erdeprof.storyapp.login.data.ResultLogin
 import com.erdeprof.storyapp.register.data.ResultRegister
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
 import retrofit2.Call
-import retrofit2.http.Field
-import retrofit2.http.FormUrlEncoded
-import retrofit2.http.GET
-import retrofit2.http.POST
+import retrofit2.http.*
 
 interface NetworkService {
     @FormUrlEncoded
     @POST("login")
     fun login(@Field("email") email : String?,
-              @Field("password") password: String?) : Call<ResultLogin>
+              @Field("password") password: String?
+    ) : Call<ResultLogin>
 
     @FormUrlEncoded
     @POST("register")
@@ -26,4 +27,10 @@ interface NetworkService {
 
     @GET("stories")
     fun stories() : Call<ResultStories>
+
+    @Multipart
+    @POST("stories")
+    fun addStory(@Part("description") description : RequestBody?,
+                 @Part("photo") photo : RequestBody? //MultipartBody.Part?
+    ) : Call<ResultAddStory>
 }

@@ -1,5 +1,6 @@
 package com.erdeprof.storyapp.dashboard
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
@@ -15,7 +16,6 @@ import com.erdeprof.storyapp.dashboard.data.Story
 import com.erdeprof.storyapp.dashboard.presenter.StoriesPresenter
 import com.erdeprof.storyapp.dashboard.presenter.StoriesView
 import com.erdeprof.storyapp.login.LoginActivity
-import com.erdeprof.storyapp.login.presenter.LoginPresenter
 
 
 class DashboardActivity : AppCompatActivity(), StoriesView {
@@ -24,6 +24,7 @@ class DashboardActivity : AppCompatActivity(), StoriesView {
     private lateinit var storiesPresenter: StoriesPresenter
     private val list = ArrayList<Story>()
 
+    @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_dashboard)
@@ -32,6 +33,7 @@ class DashboardActivity : AppCompatActivity(), StoriesView {
 
         val token = sharedPreferences.getString("token", null);
 
+        val btnAddStory =findViewById<Button>(R.id.btnAddStory)
         val btnLogout = findViewById<Button>(R.id.btnLogOut)
 
         if (token == null) {
@@ -54,6 +56,11 @@ class DashboardActivity : AppCompatActivity(), StoriesView {
             val intent = Intent(this@DashboardActivity, LoginActivity::class.java)
             startActivity(intent)
             finish()
+        })
+
+        btnAddStory.setOnClickListener(View.OnClickListener {
+            val intent = Intent(this@DashboardActivity, AddStoryActivity::class.java)
+            startActivity(intent)
         })
 
         println("TOKEN = " + token.toString());
