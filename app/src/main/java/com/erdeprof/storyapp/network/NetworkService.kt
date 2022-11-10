@@ -8,7 +8,6 @@ import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import retrofit2.Call
 import retrofit2.http.*
-import java.io.File
 
 interface NetworkService {
     @FormUrlEncoded
@@ -21,9 +20,7 @@ interface NetworkService {
     @POST("register")
     fun register(@Field("name") name : String?,
                  @Field("email") email : String?,
-                 // @Field("hp") hp : String?,
-                 @Field("password") password : String?,
-                 // @Field("alamat") alamat : String?
+                 @Field("password") password : String?
     ) : Call<ResultRegister>
 
     @GET("stories")

@@ -22,7 +22,7 @@ class DetailActivity : AppCompatActivity() {
 
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
-        setTitle("Story Detail")
+        setTitle(getString(R.string.text_story_detail))
 
         val parser = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss")
         val formatter = SimpleDateFormat("dd MMM yyyy")

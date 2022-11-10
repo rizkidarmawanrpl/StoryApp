@@ -2,12 +2,11 @@ package com.erdeprof.storyapp.customview
 
 import android.content.Context
 import android.graphics.Canvas
-import android.text.Editable
-import android.text.TextWatcher
 import android.util.AttributeSet
 import android.view.MotionEvent
 import android.view.View
 import androidx.appcompat.widget.AppCompatEditText
+import androidx.core.widget.addTextChangedListener
 
 class MyEditText : AppCompatEditText, View.OnTouchListener {
     constructor(context: Context) : super(context) {
@@ -29,15 +28,11 @@ class MyEditText : AppCompatEditText, View.OnTouchListener {
     private fun init() {
         setOnTouchListener(this)
 
-        addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {
-                // Do nothing.
-            }
-            override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
-                // Do nothing.
-            }
-            override fun afterTextChanged(s: Editable) {
-                // Do nothing.
+        addTextChangedListener(afterTextChanged = { text ->
+            if (text.toString().length < 6) {
+                error = "Password minimal harus 6 character"
+            } else {
+                setError(null, null)
             }
         })
     }

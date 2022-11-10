@@ -1,16 +1,10 @@
 package com.erdeprof.storyapp.login
 
-// import com.erdeprof.storyapp.login.data.Staff
-// import org.jetbrains.anko.startActivity
-
 import android.animation.AnimatorSet
 import android.animation.ObjectAnimator
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
-import android.system.Os.uname
-import android.text.Editable
-import android.text.TextWatcher
 import android.view.View
 import android.widget.Button
 import android.widget.EditText
@@ -25,7 +19,6 @@ import com.erdeprof.storyapp.login.data.User
 import com.erdeprof.storyapp.login.presenter.LoginPresenter
 import com.erdeprof.storyapp.login.presenter.LoginView
 import com.erdeprof.storyapp.register.RegisterActivity
-
 
 class LoginActivity : AppCompatActivity(), LoginView {
     private lateinit var presenter: LoginPresenter
@@ -44,51 +37,29 @@ class LoginActivity : AppCompatActivity(), LoginView {
 
         btnLogin.setOnClickListener {
             val email = findViewById<EditText>(R.id.loginEmail).text.toString()
-            val password = myEditText.text.toString() // findViewById<EditText>(R.id.loginPassword).text.toString()
+            val password = myEditText.text.toString()
             presenter.login(email, password)
         }
 
         btnRegister.setOnClickListener {
-            // startActivity<RegisterActivity>()
-
             val intent = Intent(this, RegisterActivity::class.java)
             startActivity(intent)
         }
 
         playAnimation()
-
-        myEditText.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {
-            }
-            override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
-                // setMyButtonEnable()
-            }
-            override fun afterTextChanged(s: Editable) {
-                if (myEditText.toString().isNotEmpty() && myEditText.text.toString().length < 6) {
-                    myEditText.setError("Password minimal harus 6 karakter!");
-                } else {
-                    myEditText.setError(null);
-                }
-            }
-        })
     }
 
     override fun onSuccessLogin(msg: String?, data: User?) {
-        /*alert {
-            title = "Information"
-            message = "Login Success"
-        }.show()*/
-
         sharedPreferences = getSharedPreferences("user_details", MODE_PRIVATE);
+        sharedPreferences.contains("session");
         sharedPreferences.contains("token");
 
         val editor = sharedPreferences.edit()
+        editor.putBoolean("session", true)
         editor.putString("token", data?.token)
         editor.apply()
 
-        Toast.makeText(this@LoginActivity, "Login Success.", Toast.LENGTH_SHORT).show()
-
-        // startActivity<DashboardActivity>()
+        Toast.makeText(this@LoginActivity, "${getString(R.string.text_success_login)}.", Toast.LENGTH_SHORT).show()
 
         val intent = Intent(this, DashboardActivity::class.java)
         startActivity(intent)
@@ -96,11 +67,6 @@ class LoginActivity : AppCompatActivity(), LoginView {
     }
 
     override fun onFailedLogin(msg: String?) {
-        /*alert {
-            title = "Information"
-            message = "Login Failed Silahkan Cek Email Password"
-        }.show()*/
-
         Toast.makeText(this@LoginActivity, msg, Toast.LENGTH_SHORT).show()
     }
 

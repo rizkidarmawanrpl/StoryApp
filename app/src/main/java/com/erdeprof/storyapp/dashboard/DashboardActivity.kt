@@ -17,11 +17,11 @@ import com.erdeprof.storyapp.dashboard.presenter.StoriesPresenter
 import com.erdeprof.storyapp.dashboard.presenter.StoriesView
 import com.erdeprof.storyapp.login.LoginActivity
 
-
 class DashboardActivity : AppCompatActivity(), StoriesView {
     private lateinit var sharedPreferences: SharedPreferences
     private lateinit var rvStories: RecyclerView
     private lateinit var storiesPresenter: StoriesPresenter
+    private var session: Boolean? = false
     private var token: String? = ""
     private val list = ArrayList<Story>()
 
@@ -32,6 +32,7 @@ class DashboardActivity : AppCompatActivity(), StoriesView {
 
         sharedPreferences = getSharedPreferences("user_details", MODE_PRIVATE);
 
+        session = sharedPreferences.getBoolean("session", false);
         token = sharedPreferences.getString("token", null);
 
         val btnAddStory =findViewById<Button>(R.id.btnAddStory)
@@ -51,14 +52,12 @@ class DashboardActivity : AppCompatActivity(), StoriesView {
             val intent = Intent(this@DashboardActivity, AddStoryActivity::class.java)
             startActivity(intent)
         })
-
-        // println("TOKEN = " + token.toString());
     }
 
     override fun onResume() {
         super.onResume()
 
-        if (token == null) {
+        if (session == false) {
             val intent = Intent(this@DashboardActivity, LoginActivity::class.java)
             startActivity(intent)
             finish()

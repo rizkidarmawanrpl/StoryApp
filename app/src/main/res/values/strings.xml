@@ -1,3 +1,22 @@
 <resources>
     <string name="app_name">Story App</string>
+    <string name="text_nama">Nama</string>
+    <string name="text_deskripsi">Deskripsi</string>
+    <string name="text_register">Register</string>
+    <string name="text_email">Email</string>
+    <string name="text_login">Login</string>
+    <string name="text_sample_createdat">10 Nov 2022</string>
+    <string name="text_sample_name">Rizki Darmawan</string>
+    <string name="text_sample_deskripsi">Test test</string>
+    <string name="text_logout">Logout</string>
+    <string name="text_add_story">Add Story</string>
+    <string name="text_kamera">Kamera</string>
+    <string name="text_galeri">Galeri</string>
+    <string name="text_upload">Upload</string>
+    <string name="text_error_password">Password minimal harus 6 karakter</string>
+    <string name="text_success_register">Register Berhasil</string>
+    <string name="text_success_login">Login Berhasil</string>
+    <string name="text_pilih_gambar">Pilih Gambar</string>
+    <string name="text_story_detail">Story Detail</string>
+    <string name="text_masukan_password">Masukkan Password</string>
 </resources>

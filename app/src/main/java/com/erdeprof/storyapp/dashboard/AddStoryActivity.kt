@@ -3,7 +3,6 @@ package com.erdeprof.storyapp.dashboard
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
-import android.database.Cursor
 import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
@@ -18,14 +17,12 @@ import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.FileProvider
-import androidx.loader.content.CursorLoader
 import com.erdeprof.storyapp.R
 import com.erdeprof.storyapp.dashboard.presenter.AddStoryView
 import com.erdeprof.storyapp.dashboard.presenter.AddstoryPresenter
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
-import okhttp3.RequestBody
 import okhttp3.RequestBody.Companion.asRequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
 import java.io.File
@@ -35,12 +32,16 @@ import java.io.OutputStream
 import java.text.SimpleDateFormat
 import java.util.*
 
-
 class AddStoryActivity : AppCompatActivity(), AddStoryView {
     private lateinit var sharedPreferences: SharedPreferences
     private lateinit var presenterAddStory : AddstoryPresenter
     private lateinit var fileUri : File
     private lateinit var currentPhotoPath: String
+
+    private val timeStamp: String = SimpleDateFormat(
+        "HHmmddMMyyyy",
+        Locale.US
+    ).format(System.currentTimeMillis())
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -49,7 +50,7 @@ class AddStoryActivity : AppCompatActivity(), AddStoryView {
 
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
-        setTitle("Add Story")
+        setTitle(getString(R.string.text_add_story))
 
         sharedPreferences = getSharedPreferences("user_details", MODE_PRIVATE);
 
@@ -81,7 +82,7 @@ class AddStoryActivity : AppCompatActivity(), AddStoryView {
             launcherIntentGallery.launch(Intent.createChooser(Intent().apply {
                 action = Intent.ACTION_GET_CONTENT
                 type = "image/*"
-            }, "Pilih Gambar"))
+            }, getString(R.string.text_pilih_gambar)))
         })
 
         btnCamera.setOnClickListener(View.OnClickListener {
@@ -118,20 +119,14 @@ class AddStoryActivity : AppCompatActivity(), AddStoryView {
         Toast.makeText(this@AddStoryActivity, msg.toString(), Toast.LENGTH_SHORT).show()
 
         val intent = Intent(this@AddStoryActivity, DashboardActivity::class.java)
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(intent)
-        // onStop()
-        // finish()
     }
 
     override fun onFailedAddStory(msg: String?) {
         println(msg)
         Toast.makeText(this@AddStoryActivity, msg.toString(), Toast.LENGTH_SHORT).show()
     }
-
-    private val timeStamp: String = SimpleDateFormat(
-        "HHmmddMMyyyy",
-        Locale.US
-    ).format(System.currentTimeMillis())
 
     fun createCustomTempFile(context: Context): File {
         val storageDir: File? = context.getExternalFilesDir(Environment.DIRECTORY_PICTURES)

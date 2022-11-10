@@ -1,8 +1,5 @@
 package com.erdeprof.storyapp.network
 
-import android.content.SharedPreferences
-import androidx.appcompat.app.AppCompatActivity
-import com.erdeprof.storyapp.register.RegisterActivity
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -25,8 +22,6 @@ object NetworkConfig {
 
         return okHttpClient
     }
-
-    //Retrofit
 
     fun getRetrofit(token : String?): Retrofit {
         return Retrofit.Builder()

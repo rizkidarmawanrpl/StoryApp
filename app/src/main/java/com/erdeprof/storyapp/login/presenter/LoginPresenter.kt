@@ -1,6 +1,5 @@
 package com.erdeprof.storyapp.login.presenter
 
-import android.widget.Toast
 import com.erdeprof.storyapp.login.data.ResultLogin
 import com.erdeprof.storyapp.network.NetworkConfig
 import retrofit2.Call

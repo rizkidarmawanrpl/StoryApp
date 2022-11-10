@@ -7,7 +7,6 @@ import okhttp3.RequestBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import java.io.File
 
 class AddstoryPresenter (val addStoryView: AddStoryView) {
     fun addStory(token: String? = null, description: RequestBody?, photo: MultipartBody.Part?) {
