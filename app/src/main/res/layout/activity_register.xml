@@ -56,13 +56,20 @@
                 android:layout_marginTop="10dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
-            <EditText
+            <!--<EditText
                 android:id="@+id/registerPassword"
                 android:hint="Password"
                 android:inputType="textPassword"
                 android:layout_marginTop="10dp"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content"/>-->
+            <com.erdeprof.storyapp.customview.MyEditText
+                android:id="@+id/registerPasswordCustom"
+                android:inputType="textPassword"
+                android:layout_marginTop="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start"/>
             <Button
                 android:id="@+id/btnRegister"
                 android:layout_marginTop="20dp"

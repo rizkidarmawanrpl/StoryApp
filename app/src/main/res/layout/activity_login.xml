@@ -45,12 +45,20 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:alpha="0"/>
-            <EditText
+            <!--<EditText
                 android:id="@+id/loginPassword"
                 android:hint="Password"
                 android:inputType="textPassword"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:alpha="0"/>-->
+
+            <com.erdeprof.storyapp.customview.MyEditText
+                android:id="@+id/loginPasswordCustom"
+                android:inputType="textPassword"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start"
                 android:alpha="0"/>
 
             <LinearLayout

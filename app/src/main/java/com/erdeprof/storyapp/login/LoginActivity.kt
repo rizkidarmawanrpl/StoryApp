@@ -9,6 +9,8 @@ import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.system.Os.uname
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.View
 import android.widget.Button
 import android.widget.EditText
@@ -17,6 +19,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.erdeprof.storyapp.R
+import com.erdeprof.storyapp.customview.MyEditText
 import com.erdeprof.storyapp.dashboard.DashboardActivity
 import com.erdeprof.storyapp.login.data.User
 import com.erdeprof.storyapp.login.presenter.LoginPresenter
@@ -27,6 +30,7 @@ import com.erdeprof.storyapp.register.RegisterActivity
 class LoginActivity : AppCompatActivity(), LoginView {
     private lateinit var presenter: LoginPresenter
     private lateinit var sharedPreferences: SharedPreferences
+    private lateinit var myEditText: MyEditText
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,9 +40,11 @@ class LoginActivity : AppCompatActivity(), LoginView {
         val btnLogin = findViewById<Button>(R.id.btnLogin)
         val btnRegister = findViewById<Button>(R.id.btnRegister)
 
+        myEditText = findViewById(R.id.loginPasswordCustom)
+
         btnLogin.setOnClickListener {
             val email = findViewById<EditText>(R.id.loginEmail).text.toString()
-            val password = findViewById<EditText>(R.id.loginPassword).text.toString()
+            val password = myEditText.text.toString() // findViewById<EditText>(R.id.loginPassword).text.toString()
             presenter.login(email, password)
         }
 
@@ -50,6 +56,21 @@ class LoginActivity : AppCompatActivity(), LoginView {
         }
 
         playAnimation()
+
+        myEditText.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {
+            }
+            override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
+                // setMyButtonEnable()
+            }
+            override fun afterTextChanged(s: Editable) {
+                if (myEditText.toString().isNotEmpty() && myEditText.text.toString().length < 6) {
+                    myEditText.setError("Password minimal harus 6 karakter!");
+                } else {
+                    myEditText.setError(null);
+                }
+            }
+        })
     }
 
     override fun onSuccessLogin(msg: String?, data: User?) {
@@ -88,7 +109,7 @@ class LoginActivity : AppCompatActivity(), LoginView {
         val btnLogin = findViewById<Button>(R.id.btnLogin)
         val btnRegister = findViewById<Button>(R.id.btnRegister)
         val loginEmail = findViewById<EditText>(R.id.loginEmail)
-        val loginPassword = findViewById<EditText>(R.id.loginPassword)
+        val loginPassword = findViewById<EditText>(R.id.loginPasswordCustom)
         val tvTitle = findViewById<TextView>(R.id.tvTitle)
 
         ObjectAnimator.ofFloat(ivGambar, View.TRANSLATION_X, -30f, 30f).apply {

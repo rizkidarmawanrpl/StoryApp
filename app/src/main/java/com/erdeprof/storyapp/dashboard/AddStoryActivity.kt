@@ -111,16 +111,16 @@ class AddStoryActivity : AppCompatActivity(), AddStoryView {
             val photo = MultipartBody.Part.createFormData("photo", fileUri.name, requestImageFile)
 
             presenterAddStory.addStory(token, description, photo)
-
-            val intent = Intent(this@AddStoryActivity, DashboardActivity::class.java)
-            startActivity(intent)
-            finish()
         })
     }
 
     override fun onSuccessAddStory(msg: String?) {
-        println(msg)
         Toast.makeText(this@AddStoryActivity, msg.toString(), Toast.LENGTH_SHORT).show()
+
+        val intent = Intent(this@AddStoryActivity, DashboardActivity::class.java)
+        startActivity(intent)
+        // onStop()
+        // finish()
     }
 
     override fun onFailedAddStory(msg: String?) {

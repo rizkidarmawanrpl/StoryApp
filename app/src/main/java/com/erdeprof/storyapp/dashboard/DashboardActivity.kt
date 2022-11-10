@@ -22,6 +22,7 @@ class DashboardActivity : AppCompatActivity(), StoriesView {
     private lateinit var sharedPreferences: SharedPreferences
     private lateinit var rvStories: RecyclerView
     private lateinit var storiesPresenter: StoriesPresenter
+    private var token: String? = ""
     private val list = ArrayList<Story>()
 
     @SuppressLint("MissingInflatedId")
@@ -31,22 +32,10 @@ class DashboardActivity : AppCompatActivity(), StoriesView {
 
         sharedPreferences = getSharedPreferences("user_details", MODE_PRIVATE);
 
-        val token = sharedPreferences.getString("token", null);
+        token = sharedPreferences.getString("token", null);
 
         val btnAddStory =findViewById<Button>(R.id.btnAddStory)
         val btnLogout = findViewById<Button>(R.id.btnLogOut)
-
-        if (token == null) {
-            val intent = Intent(this@DashboardActivity, LoginActivity::class.java)
-            startActivity(intent)
-            finish()
-        } else {
-            storiesPresenter = StoriesPresenter(this)
-            storiesPresenter.stories(token)
-
-            rvStories = findViewById(R.id.rvStories)
-            rvStories.setHasFixedSize(true)
-        }
 
         btnLogout.setOnClickListener(View.OnClickListener {
             val editor = sharedPreferences.edit()
@@ -63,7 +52,23 @@ class DashboardActivity : AppCompatActivity(), StoriesView {
             startActivity(intent)
         })
 
-        println("TOKEN = " + token.toString());
+        // println("TOKEN = " + token.toString());
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        if (token == null) {
+            val intent = Intent(this@DashboardActivity, LoginActivity::class.java)
+            startActivity(intent)
+            finish()
+        } else {
+            storiesPresenter = StoriesPresenter(this)
+            storiesPresenter.stories(token)
+
+            rvStories = findViewById(R.id.rvStories)
+            rvStories.setHasFixedSize(true)
+        }
     }
 
     override fun onSuccessStories(msg: String?, data: ArrayList<Story>?) {

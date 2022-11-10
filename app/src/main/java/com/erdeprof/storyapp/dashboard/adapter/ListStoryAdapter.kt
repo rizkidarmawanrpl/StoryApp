@@ -4,18 +4,20 @@ import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.erdeprof.storyapp.R
 import com.erdeprof.storyapp.dashboard.DetailActivity
 import com.erdeprof.storyapp.dashboard.data.Story
+import com.bumptech.glide.Glide
 
 class ListStoryAdapter(private val listStory: ArrayList<Story>) : RecyclerView.Adapter<ListStoryAdapter.ListViewHolder>() {
     private lateinit var onItemClickCallback: OnItemClickCallback
 
     class ListViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        // var imgPhoto: ImageView = itemView.findViewById(R.id.img_item_photo)
+        var imgPhoto: ImageView = itemView.findViewById(R.id.img_item_photo)
         var tvName: TextView = itemView.findViewById(R.id.tv_item_name)
         var tvDescription: TextView = itemView.findViewById(R.id.tv_item_description)
     }
@@ -26,8 +28,12 @@ class ListStoryAdapter(private val listStory: ArrayList<Story>) : RecyclerView.A
     }
 
     override fun onBindViewHolder(holder: ListViewHolder, position: Int) {
-        val (lon, lat, createdAt, photoUlr, description, name, id) = listStory[position]
-        // holder.imgPhoto.setImageResource(photoUrl)
+        val (lon, lat, createdAt, photoUrl, description, name, id) = listStory[position]
+        Glide.with(holder.itemView.context)
+            .load(photoUrl)
+            .placeholder(R.mipmap.ic_launcher)
+            .error(R.mipmap.ic_launcher)
+            .into(holder.imgPhoto)
         holder.tvName.text = name
         holder.tvDescription.text = description
         holder.itemView.setOnClickListener { onItemClickCallback.onItemClicked(listStory[holder.adapterPosition]) }
