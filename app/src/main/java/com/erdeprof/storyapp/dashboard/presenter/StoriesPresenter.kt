@@ -7,7 +7,7 @@ import retrofit2.Callback
 import retrofit2.Response
 
 class StoriesPresenter (val storiesView: StoriesView) {
-    fun stories(token : String? = null, location : Int? = 0) {
+    fun stories(token : String? = null, location : Int? = 0, ) {
         NetworkConfig.getService(token)
             .stories(location)
             .enqueue(object : Callback<ResultStories> {

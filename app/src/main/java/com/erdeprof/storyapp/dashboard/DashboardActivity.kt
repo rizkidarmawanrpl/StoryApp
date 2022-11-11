@@ -8,11 +8,16 @@ import android.view.View
 import android.widget.Button
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.ViewModelProvider
+import androidx.paging.PagingData
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.erdeprof.storyapp.R
 import com.erdeprof.storyapp.dashboard.adapter.ListStoryAdapter
+import com.erdeprof.storyapp.dashboard.adapter.ListStoryPagerAdapter
 import com.erdeprof.storyapp.dashboard.data.Story
+import com.erdeprof.storyapp.dashboard.model.MainViewModel
 import com.erdeprof.storyapp.dashboard.presenter.StoriesPresenter
 import com.erdeprof.storyapp.dashboard.presenter.StoriesView
 import com.erdeprof.storyapp.login.LoginActivity
@@ -68,11 +73,24 @@ class DashboardActivity : AppCompatActivity(), StoriesView {
             startActivity(intent)
             finish()
         } else {
-            storiesPresenter = StoriesPresenter(this)
-            storiesPresenter.stories(token)
+            val mainViewModel = ViewModelProvider(this, ViewModelProvider.NewInstanceFactory()).get(
+                MainViewModel::class.java)
+
+//            storiesPresenter = StoriesPresenter(this)
+//            storiesPresenter.stories(token)
 
             rvStories = findViewById(R.id.rvStories)
             rvStories.setHasFixedSize(true)
+
+            rvStories.layoutManager = LinearLayoutManager(this)
+            val listStoryAdapter = ListStoryPagerAdapter()
+            rvStories.adapter = listStoryAdapter
+
+            token?.let { mainViewModel.getStory(this, it) }
+
+            mainViewModel.story.observe(this) {
+                listStoryAdapter.submitData(lifecycle, it)
+            }
         }
     }
 
