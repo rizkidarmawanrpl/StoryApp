@@ -24,7 +24,7 @@ interface NetworkService {
     ) : Call<ResultRegister>
 
     @GET("stories")
-    fun stories() : Call<ResultStories>
+    fun stories(@Query("location") location : Int?) : Call<ResultStories>
 
     @Multipart
     @POST("stories")

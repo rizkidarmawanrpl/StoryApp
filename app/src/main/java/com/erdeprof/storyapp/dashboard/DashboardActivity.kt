@@ -35,7 +35,8 @@ class DashboardActivity : AppCompatActivity(), StoriesView {
         session = sharedPreferences.getBoolean("session", false);
         token = sharedPreferences.getString("token", null);
 
-        val btnAddStory =findViewById<Button>(R.id.btnAddStory)
+        val btnAddStory = findViewById<Button>(R.id.btnAddStory)
+        val btnMap = findViewById<Button>(R.id.btnMap)
         val btnLogout = findViewById<Button>(R.id.btnLogOut)
 
         btnLogout.setOnClickListener(View.OnClickListener {
@@ -50,6 +51,11 @@ class DashboardActivity : AppCompatActivity(), StoriesView {
 
         btnAddStory.setOnClickListener(View.OnClickListener {
             val intent = Intent(this@DashboardActivity, AddStoryActivity::class.java)
+            startActivity(intent)
+        })
+
+        btnMap.setOnClickListener(View.OnClickListener {
+            val intent = Intent(this@DashboardActivity, MapsActivity::class.java)
             startActivity(intent)
         })
     }
