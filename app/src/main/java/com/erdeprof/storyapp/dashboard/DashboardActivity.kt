@@ -18,7 +18,6 @@ import com.erdeprof.storyapp.dashboard.adapter.ListStoryAdapter
 import com.erdeprof.storyapp.dashboard.adapter.ListStoryPagerAdapter
 import com.erdeprof.storyapp.dashboard.data.Story
 import com.erdeprof.storyapp.dashboard.model.MainViewModel
-import com.erdeprof.storyapp.dashboard.model.ViewModelFactory
 import com.erdeprof.storyapp.dashboard.presenter.StoriesPresenter
 import com.erdeprof.storyapp.dashboard.presenter.StoriesView
 import com.erdeprof.storyapp.login.LoginActivity
@@ -30,9 +29,9 @@ class DashboardActivity : AppCompatActivity(), StoriesView {
     private var token: String? = ""
     private val list = ArrayList<Story>()
 
-    private val mainViewModel: MainViewModel by viewModels {
-        token?.let { ViewModelFactory(this, it) }
-    }
+//    private val mainViewModel: MainViewModel by viewModels {
+//        token?.let { ViewModelFactory(this, it) }
+//    }
 
     @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -77,9 +76,6 @@ class DashboardActivity : AppCompatActivity(), StoriesView {
             startActivity(intent)
             finish()
         } else {
-            val mainViewModel = ViewModelProvider(this, ViewModelProvider.NewInstanceFactory()).get(
-                MainViewModel::class.java)
-
 //            storiesPresenter = StoriesPresenter(this)
 //            storiesPresenter.stories(token)
 
@@ -87,24 +83,17 @@ class DashboardActivity : AppCompatActivity(), StoriesView {
             rvStories.setHasFixedSize(true)
 
             rvStories.layoutManager = LinearLayoutManager(this)
-//            val listStoryAdapter = ListStoryPagerAdapter()
-//
-//            token?.let { mainViewModel.getStory(this, it) }
-//
-//            mainViewModel.story.observe(this) {
-//                listStoryAdapter.submitData(lifecycle, it)
-//            }
-//
-//            rvStories.adapter = listStoryAdapter
 
             getData()
         }
     }
 
     private fun getData() {
+        val mainViewModel = ViewModelProvider(this, ViewModelProvider.NewInstanceFactory())[MainViewModel::class.java]
+
         val adapter = ListStoryPagerAdapter()
         rvStories.adapter = adapter
-        mainViewModel.getStory()
+        token?.let { mainViewModel.getStory(this, it) }
         mainViewModel.story.observe(this) {
             adapter.submitData(lifecycle, it)
         }
