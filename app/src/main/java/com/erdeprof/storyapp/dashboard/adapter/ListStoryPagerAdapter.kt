@@ -16,14 +16,13 @@ import com.erdeprof.storyapp.dashboard.data.Story
 class ListStoryPagerAdapter: PagingDataAdapter<Story, ListStoryPagerAdapter.ListViewHolder>(DIFF_CALLBACK) {
     private lateinit var onItemClickCallback: OnItemClickCallback
 
-    class ListViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    class ListViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView.rootView) {
         var imgPhoto: ImageView = itemView.findViewById(R.id.img_item_photo)
         var tvName: TextView = itemView.findViewById(R.id.tv_item_name)
         var tvDescription: TextView = itemView.findViewById(R.id.tv_item_description)
 
         fun bind(item: Story) {
             val (lon, lat, createdAt, photoUrl, description, name, id) = item
-
             tvName.text = name
         }
     }
@@ -44,9 +43,12 @@ class ListStoryPagerAdapter: PagingDataAdapter<Story, ListStoryPagerAdapter.List
 //        holder.tvDescription.text = description
 //        holder.itemView.setOnClickListener { onItemClickCallback.onItemClicked(getItem(position)/*listStory[holder.adapterPosition]*/) }
 
-        getItem(position)?.let { holder.bind(it) }
+        // getItem(position)?.let { holder.bind(it) }
 
-        println("OK Ok OK")
+        val data = getItem(position)
+        if (data != null) {
+            holder.bind(data)
+        }
     }
 
     // override fun getItemCount(): Int = listStory.size

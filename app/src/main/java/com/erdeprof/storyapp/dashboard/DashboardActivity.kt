@@ -18,10 +18,10 @@ import com.erdeprof.storyapp.dashboard.adapter.ListStoryAdapter
 import com.erdeprof.storyapp.dashboard.adapter.ListStoryPagerAdapter
 import com.erdeprof.storyapp.dashboard.data.Story
 import com.erdeprof.storyapp.dashboard.model.MainViewModel
+import com.erdeprof.storyapp.dashboard.model.ViewModelFactory
 import com.erdeprof.storyapp.dashboard.presenter.StoriesPresenter
 import com.erdeprof.storyapp.dashboard.presenter.StoriesView
 import com.erdeprof.storyapp.login.LoginActivity
-
 class DashboardActivity : AppCompatActivity(), StoriesView {
     private lateinit var sharedPreferences: SharedPreferences
     private lateinit var rvStories: RecyclerView
@@ -29,6 +29,10 @@ class DashboardActivity : AppCompatActivity(), StoriesView {
     private var session: Boolean? = false
     private var token: String? = ""
     private val list = ArrayList<Story>()
+
+    private val mainViewModel: MainViewModel by viewModels {
+        token?.let { ViewModelFactory(this, it) }
+    }
 
     @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -83,14 +87,26 @@ class DashboardActivity : AppCompatActivity(), StoriesView {
             rvStories.setHasFixedSize(true)
 
             rvStories.layoutManager = LinearLayoutManager(this)
-            val listStoryAdapter = ListStoryPagerAdapter()
-            rvStories.adapter = listStoryAdapter
+//            val listStoryAdapter = ListStoryPagerAdapter()
+//
+//            token?.let { mainViewModel.getStory(this, it) }
+//
+//            mainViewModel.story.observe(this) {
+//                listStoryAdapter.submitData(lifecycle, it)
+//            }
+//
+//            rvStories.adapter = listStoryAdapter
 
-            token?.let { mainViewModel.getStory(this, it) }
+            getData()
+        }
+    }
 
-            mainViewModel.story.observe(this) {
-                listStoryAdapter.submitData(lifecycle, it)
-            }
+    private fun getData() {
+        val adapter = ListStoryPagerAdapter()
+        rvStories.adapter = adapter
+        mainViewModel.getStory()
+        mainViewModel.story.observe(this) {
+            adapter.submitData(lifecycle, it)
         }
     }
 

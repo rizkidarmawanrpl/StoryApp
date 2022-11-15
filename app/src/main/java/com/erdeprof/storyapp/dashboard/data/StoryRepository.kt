@@ -12,7 +12,7 @@ class StoryRepository(/*private val storyDatabase: StoryDatabase,*/ private val 
     fun getStory(): LiveData<PagingData<Story>> {
         return Pager(
             config = PagingConfig(
-                pageSize = 1
+                pageSize = 2
             ),
             pagingSourceFactory = {
                 StoryPagingSource(apiService)
