@@ -8,9 +8,7 @@ import android.view.View
 import android.widget.Button
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModelProvider
-import androidx.paging.PagingData
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.erdeprof.storyapp.R
@@ -93,7 +91,7 @@ class DashboardActivity : AppCompatActivity(), StoriesView {
 
         val adapter = ListStoryPagerAdapter()
         rvStories.adapter = adapter
-        token?.let { mainViewModel.getStory(this, it) }
+        token?.let { mainViewModel.getStory(it) }
         mainViewModel.story.observe(this) {
             adapter.submitData(lifecycle, it)
         }

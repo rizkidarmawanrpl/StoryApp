@@ -1,15 +1,11 @@
 package com.erdeprof.storyapp.dashboard.model
 
 import android.content.Context
-import android.content.SharedPreferences
-import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.*
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import com.erdeprof.storyapp.dashboard.data.Story
-import com.erdeprof.storyapp.dashboard.data.StoryRepository
 import com.erdeprof.storyapp.di.Injection
-import kotlinx.coroutines.launch
 
 class MainViewModel(/*private val storyRepository: StoryRepository*/) : ViewModel() {
     // private val _story = MutableLiveData<List<Story>>()
@@ -22,8 +18,8 @@ class MainViewModel(/*private val storyRepository: StoryRepository*/) : ViewMode
     // var story: LiveData<PagingData<Story>> = storyRepository.getStory().cachedIn(viewModelScope) // _story
     var story: LiveData<PagingData<Story>> = _story
 
-    fun getStory(context: Context, token: String) {
-        story = Injection.provideRepository(context, token).getStory().cachedIn(viewModelScope)
+    fun getStory(/*context: Context,*/ token: String) {
+        story = Injection.provideRepository(token).getStory().cachedIn(viewModelScope)
     }
 
 //    fun getStory() {

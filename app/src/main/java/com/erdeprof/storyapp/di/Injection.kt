@@ -6,7 +6,7 @@ import com.erdeprof.storyapp.database.StoryDatabase
 import com.erdeprof.storyapp.network.NetworkConfig
 
 object Injection {
-    fun provideRepository(context: Context, token: String): StoryRepository {
+    fun provideRepository(/*context: Context,*/ token: String): StoryRepository {
         // val database = StoryDatabase.getDatabase(context)
         val apiService = NetworkConfig.getService(token)
         return StoryRepository(apiService)
