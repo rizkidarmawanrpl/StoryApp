@@ -29,11 +29,11 @@ interface NetworkService {
     ) : Call<ResultStories>
 
     @GET("stories")
-    fun stories2(
+    suspend fun stories2(
         @Query("location") location : Int?,
         @Query("page") page : Int? = null,
         @Query("size") size : Int? = null
-    ) : List<Story>
+    ) : ResultStories
 
     @Multipart
     @POST("stories")

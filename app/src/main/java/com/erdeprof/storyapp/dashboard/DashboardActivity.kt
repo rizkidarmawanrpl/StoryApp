@@ -97,6 +97,12 @@ class DashboardActivity : AppCompatActivity(), StoriesView {
         mainViewModel.story.observe(this) {
             adapter.submitData(lifecycle, it)
         }
+
+        adapter.setOnItemClickCallback(object : ListStoryPagerAdapter.OnItemClickCallback {
+            override fun onItemClicked(data: Story) {
+                showSelectedStory(data)
+            }
+        })
     }
 
     override fun onSuccessStories(msg: String?, data: ArrayList<Story>?) {

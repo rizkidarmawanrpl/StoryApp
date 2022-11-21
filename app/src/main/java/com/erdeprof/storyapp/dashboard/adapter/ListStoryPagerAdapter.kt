@@ -23,7 +23,14 @@ class ListStoryPagerAdapter: PagingDataAdapter<Story, ListStoryPagerAdapter.List
 
         fun bind(item: Story) {
             val (lon, lat, createdAt, photoUrl, description, name, id) = item
+
+            Glide.with(itemView.context)
+                .load(photoUrl)
+                .placeholder(R.mipmap.ic_launcher)
+                .error(R.mipmap.ic_launcher)
+                .into(imgPhoto)
             tvName.text = name
+            tvDescription.text = description
         }
     }
 
@@ -48,6 +55,7 @@ class ListStoryPagerAdapter: PagingDataAdapter<Story, ListStoryPagerAdapter.List
         val data = getItem(position)
         if (data != null) {
             holder.bind(data)
+            holder.itemView.setOnClickListener { onItemClickCallback.onItemClicked(data) }
         }
     }
 

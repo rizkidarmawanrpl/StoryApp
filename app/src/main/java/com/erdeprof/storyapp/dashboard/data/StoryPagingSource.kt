@@ -23,9 +23,9 @@ class StoryPagingSource(private val apiService: NetworkService) : PagingSource<I
             val position = params.key ?: INITIAL_PAGE_INDEX
             val responseData = apiService.stories2(location, position, params.loadSize)
             LoadResult.Page(
-                data = responseData,
+                data = responseData.listStory?.toList() ?: emptyList(),
                 prevKey = if (position == INITIAL_PAGE_INDEX) null else position - 1,
-                nextKey = if (responseData.isNullOrEmpty()) null else position + 1
+                nextKey = if (responseData.listStory.isNullOrEmpty()) null else position + 1
             )
         } catch (exception: Exception) {
             return LoadResult.Error(exception)
