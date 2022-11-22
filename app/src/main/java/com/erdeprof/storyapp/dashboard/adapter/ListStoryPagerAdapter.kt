@@ -7,7 +7,6 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.erdeprof.storyapp.R
@@ -40,26 +39,12 @@ class ListStoryPagerAdapter: PagingDataAdapter<Story, ListStoryPagerAdapter.List
     }
 
     override fun onBindViewHolder(holder: ListViewHolder, position: Int) {
-//        val (lon, lat, createdAt, photoUrl, description, name, id) = getItem(position) // listStory[position]
-//        Glide.with(holder.itemView.context)
-//            .load(photoUrl)
-//            .placeholder(R.mipmap.ic_launcher)
-//            .error(R.mipmap.ic_launcher)
-//            .into(holder.imgPhoto)
-//        holder.tvName.text = name
-//        holder.tvDescription.text = description
-//        holder.itemView.setOnClickListener { onItemClickCallback.onItemClicked(getItem(position)/*listStory[holder.adapterPosition]*/) }
-
-        // getItem(position)?.let { holder.bind(it) }
-
         val data = getItem(position)
         if (data != null) {
             holder.bind(data)
             holder.itemView.setOnClickListener { onItemClickCallback.onItemClicked(data) }
         }
     }
-
-    // override fun getItemCount(): Int = listStory.size
 
     fun setOnItemClickCallback(onItemClickCallback: OnItemClickCallback) {
         this.onItemClickCallback = onItemClickCallback
@@ -70,7 +55,7 @@ class ListStoryPagerAdapter: PagingDataAdapter<Story, ListStoryPagerAdapter.List
     }
 
     companion object {
-        /*private*/ val DIFF_CALLBACK = object : DiffUtil.ItemCallback<Story>() {
+        val DIFF_CALLBACK = object : DiffUtil.ItemCallback<Story>() {
             override fun areItemsTheSame(oldItem: Story, newItem: Story): Boolean {
                 return oldItem == newItem
             }

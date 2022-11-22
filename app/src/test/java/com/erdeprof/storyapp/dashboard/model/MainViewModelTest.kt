@@ -3,7 +3,6 @@ package com.erdeprof.storyapp.dashboard.model
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Observer
 import androidx.paging.AsyncPagingDataDiffer
 import androidx.paging.PagingData
 import androidx.paging.PagingSource
@@ -13,7 +12,6 @@ import com.erdeprof.storyapp.dashboard.adapter.ListStoryPagerAdapter
 import com.erdeprof.storyapp.dashboard.data.Resource
 import com.erdeprof.storyapp.dashboard.data.Story
 import com.erdeprof.storyapp.dashboard.data.StoryRepository
-import com.erdeprof.storyapp.di.Injection
 import com.erdeprof.storyapp.utils.DataDummy
 import com.erdeprof.storyapp.utils.MainDispatcherRule
 import com.erdeprof.storyapp.utils.getOrAwaitValue
@@ -21,14 +19,12 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert
-import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.Mock
 import org.mockito.Mockito
-import org.mockito.Mockito.`when`
 import org.mockito.junit.MockitoJUnitRunner
 
 @ExperimentalCoroutinesApi
@@ -48,59 +44,38 @@ class MainViewModelTest {
     @Before
     fun setUp() {
         mainViewModel = MainViewModel()
+        mainViewModel.getStory(token)
         storyRepository = Mockito.mock(StoryRepository::class.java)
     }
 
     @Test
     suspend fun `when Get Stories Should Not Null and Return Success`() = runTest {
-//        val observer = Observer<MutableLiveData<PagingData<Story>>> {}
-//        try {
         val dummyStories = DataDummy.generateDummyStoriesEntity()
-            val data: PagingData<Story> = StoryPagingSource2.snapshot(dummyStories)
+        val data: PagingData<Story> = StoryPagingSource2.snapshot(dummyStories)
+        val expectedStories = MutableLiveData<PagingData<Story>>()
+        expectedStories.value = data
 
-            val expectedStories = MutableLiveData<PagingData<Story>>()
-            expectedStories.value = data
-            Mockito.`when`(Injection.provideRepository(token).getStory()).thenReturn(expectedStories)
+        Mockito.`when`(storyRepository.getStory()).thenReturn(expectedStories)
 
-            // val mainViewModel = MainViewModel()
         mainViewModel.getStory(token)
-            var actualStories: PagingData<Story> = mainViewModel.story.getOrAwaitValue()
-//            mainViewModel.story.observe(this) {
-//                actualStories = it
-//            }
+        var actualStories: PagingData<Story> = mainViewModel.story.getOrAwaitValue()
 
-            val differ = AsyncPagingDataDiffer(
-                diffCallback = ListStoryPagerAdapter.DIFF_CALLBACK,
-                updateCallback = noopListUpdateCallback,
-                workerDispatcher = Dispatchers.Main,
-            )
-            differ.submitData(actualStories)
+        val differ = AsyncPagingDataDiffer(
+            diffCallback = ListStoryPagerAdapter.DIFF_CALLBACK,
+            updateCallback = noopListUpdateCallback,
+            workerDispatcher = Dispatchers.Main,
+        )
+        differ.submitData(actualStories)
 
-//            val actualStories = mainViewModel.getStory(this, "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJ1c2VyLUZKSC1mSS1OellBZ1BUeXYiLCJpYXQiOjE2NjkwMjE0OTl9.Ud7JYq5lt8QAXZKLnz6LSauSTRsGL59JoNuoNw7qvbY").observeForever(observer)
+        Mockito.verify(storyRepository).getStory()
 
-             // Mockito.verify(storyRepository).getStory()
-            Assert.assertNotNull(actualStories)
-            Assert.assertNotNull(actualStories is Resource.Success<*>)
-
-            // Assert.assertNotNull(differ.snapshot())
-            Assert.assertEquals(dummyStories, differ.snapshot())
-            Assert.assertEquals(dummyStories.size, differ.snapshot().size)
+        Assert.assertNotNull(differ.snapshot())
+        // Assert.assertNotNull(actualStories)
+        Assert.assertNotNull(actualStories is Resource.Success<*>)
+        // Assert.assertEquals(dummyStories, differ.snapshot())
+        Assert.assertEquals(dummyStories.size, differ.snapshot().size)
         // Assert.assertEquals(dummyStories[0].name, differ.snapshot()[0]?.name)
-//        } finally {
-//            mainViewModel.getStory(this, "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJ1c2VyLUZKSC1mSS1OellBZ1BUeXYiLCJpYXQiOjE2NjkwMjE0OTl9.Ud7JYq5lt8QAXZKLnz6LSauSTRsGL59JoNuoNw7qvbY").removeObserver(observer)
-//        }
     }
-
-    /*@Test
-    fun `when Network Error Should Return Error`() {
-        val getStory = MutableLiveData<Resource<List<Story>>>()
-        getStory.value = Resource.Success("Error")
-        `when`(newsRepository.getHeadlineNews()).thenReturn(headlineNews)
-        val actualNews = newsViewModel.getHeadlineNews().getOrAwaitValue()
-        Mockito.verify(newsRepository).getHeadlineNews()
-        Assert.assertNotNull(actualNews)
-        Assert.assertTrue(actualNews is Result.Error)
-    }*/
 }
 
 class StoryPagingSource2 : PagingSource<Int, LiveData<List<Story>>>() {

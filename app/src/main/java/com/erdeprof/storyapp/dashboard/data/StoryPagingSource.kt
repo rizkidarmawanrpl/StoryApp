@@ -1,13 +1,8 @@
 package com.erdeprof.storyapp.dashboard.data
 
-import android.util.Log
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.erdeprof.storyapp.network.NetworkService
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
-import retrofit2.awaitResponse
 
 class StoryPagingSource(private val apiService: NetworkService) : PagingSource<Int, Story>() {
     override fun getRefreshKey(state: PagingState<Int, Story>): Int? {

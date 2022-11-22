@@ -6,30 +6,21 @@ import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.View
 import android.widget.Button
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.erdeprof.storyapp.R
-import com.erdeprof.storyapp.dashboard.adapter.ListStoryAdapter
 import com.erdeprof.storyapp.dashboard.adapter.ListStoryPagerAdapter
 import com.erdeprof.storyapp.dashboard.data.Story
 import com.erdeprof.storyapp.dashboard.model.MainViewModel
-import com.erdeprof.storyapp.dashboard.presenter.StoriesPresenter
-import com.erdeprof.storyapp.dashboard.presenter.StoriesView
 import com.erdeprof.storyapp.login.LoginActivity
-class DashboardActivity : AppCompatActivity(), StoriesView {
+
+class DashboardActivity : AppCompatActivity() {
     private lateinit var sharedPreferences: SharedPreferences
     private lateinit var rvStories: RecyclerView
-    private lateinit var storiesPresenter: StoriesPresenter
     private var session: Boolean? = false
     private var token: String? = ""
-    private val list = ArrayList<Story>()
-
-//    private val mainViewModel: MainViewModel by viewModels {
-//        token?.let { ViewModelFactory(this, it) }
-//    }
 
     @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -74,9 +65,6 @@ class DashboardActivity : AppCompatActivity(), StoriesView {
             startActivity(intent)
             finish()
         } else {
-//            storiesPresenter = StoriesPresenter(this)
-//            storiesPresenter.stories(token)
-
             rvStories = findViewById(R.id.rvStories)
             rvStories.setHasFixedSize(true)
 
@@ -97,29 +85,6 @@ class DashboardActivity : AppCompatActivity(), StoriesView {
         }
 
         adapter.setOnItemClickCallback(object : ListStoryPagerAdapter.OnItemClickCallback {
-            override fun onItemClicked(data: Story) {
-                showSelectedStory(data)
-            }
-        })
-    }
-
-    override fun onSuccessStories(msg: String?, data: ArrayList<Story>?) {
-        if (data != null) {
-            list.addAll(data)
-            showRecyclerList()
-        }
-    }
-
-    override fun onFailedStories(msg: String?) {
-        Toast.makeText(this@DashboardActivity, msg, Toast.LENGTH_SHORT).show()
-    }
-
-    private fun showRecyclerList() {
-        rvStories.layoutManager = LinearLayoutManager(this)
-        val listStoryAdapter = ListStoryAdapter(list)
-        rvStories.adapter = listStoryAdapter
-
-        listStoryAdapter.setOnItemClickCallback(object : ListStoryAdapter.OnItemClickCallback {
             override fun onItemClicked(data: Story) {
                 showSelectedStory(data)
             }
