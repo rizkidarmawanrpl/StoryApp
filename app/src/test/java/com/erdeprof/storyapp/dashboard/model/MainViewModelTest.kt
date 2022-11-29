@@ -44,7 +44,7 @@ class MainViewModelTest {
     @Before
     fun setUp() {
         mainViewModel = MainViewModel()
-        mainViewModel.getStory(token)
+        // mainViewModel.getStory(token)
         storyRepository = Mockito.mock(StoryRepository::class.java)
     }
 
