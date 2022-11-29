@@ -44,7 +44,7 @@ class MainViewModelTest {
     @Before
     fun setUp() {
         mainViewModel = MainViewModel()
-        // mainViewModel.getStory(token)
+        mainViewModel.getStory(token)
         storyRepository = Mockito.mock(StoryRepository::class.java)
     }
 
@@ -57,7 +57,6 @@ class MainViewModelTest {
 
         Mockito.`when`(storyRepository.getStory()).thenReturn(expectedStories)
 
-        mainViewModel.getStory(token)
         var actualStories: PagingData<Story> = mainViewModel.story.getOrAwaitValue()
 
         val differ = AsyncPagingDataDiffer(
@@ -70,11 +69,8 @@ class MainViewModelTest {
         Mockito.verify(storyRepository).getStory()
 
         Assert.assertNotNull(differ.snapshot())
-        // Assert.assertNotNull(actualStories)
         Assert.assertNotNull(actualStories is Resource.Success<*>)
-        // Assert.assertEquals(dummyStories, differ.snapshot())
         Assert.assertEquals(dummyStories.size, differ.snapshot().size)
-        // Assert.assertEquals(dummyStories[0].name, differ.snapshot()[0]?.name)
     }
 }
 
